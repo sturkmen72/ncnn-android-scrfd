@@ -105,7 +105,29 @@
         cv::RotatedRect getRRectPart(std::vector<cv::Point> contour);
     };
 
-
+    const static cv::Scalar colors[] =
+    {
+        cv::Scalar(0,0,0),       // 0 Black  
+        cv::Scalar(255,255,255), // 1 White
+        cv::Scalar(255,0,0),     // 2 Blue
+        cv::Scalar(0,255,0),     // 3 Lime
+        cv::Scalar(0,0,255),     // 4 Red
+        cv::Scalar(0,255,255),   // 5 Yellow
+        cv::Scalar(255,255,0),   // 6 Cyan
+        cv::Scalar(255,0,255),   // 7 Magenta
+        cv::Scalar(128,0,0),
+        cv::Scalar(0,128,0),
+        cv::Scalar(0,0,128),
+        cv::Scalar(0,128,128),
+        cv::Scalar(128,128,0),
+        cv::Scalar(128,0,128),
+        cv::Scalar(64,0,0),
+        cv::Scalar(0,64,0),
+        cv::Scalar(0,0,64),
+        cv::Scalar(0,64,64),
+        cv::Scalar(64,64,0),
+        cv::Scalar(64,0,64),
+    };
 
     struct point_sorter_x_asc // sorts points by their x ascending
     {
@@ -223,7 +245,7 @@
             chain_pt0 = validContoursWithData[0].center;
 
         int avgdim = thresh1.cols / 90;
-        int mindim = cv::cvCeil(avgdim * 0.6);
+        int mindim = cvCeil(avgdim * 0.6);
         int maxdim = avgdim * 3;
 
         std::vector<cv::Point> pts;
@@ -269,7 +291,7 @@
         return getRRectParts();
     }
 
-    RotatedRect HopeOMr::getRRectPart(std::vector<Point> contour)
+    cv::RotatedRect HopeOMr::getRRectPart(std::vector<cv::Point> contour)
     {
         //Point contour_center = (contour[0] + contour[2]) * 0.5;
         std::vector<cv::Point> pts;
