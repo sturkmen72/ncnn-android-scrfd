@@ -105,8 +105,8 @@
         cv::RotatedRect getRRectPart(std::vector<cv::Point> contour);
     };
 
-    bool doHopeOMr(cv::InputOutputArray src, int method = 0);
-{
+
+
     struct point_sorter_x_asc // sorts points by their x ascending
     {
         bool operator ()(const cv::Point& a, const cv::Point& b)
@@ -465,7 +465,7 @@
 
         return false;
     }
-}
+
 static int draw_unsupported(cv::Mat& rgb)
 {
     const char text[] = "unsupported";
