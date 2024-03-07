@@ -318,7 +318,7 @@
             cv::Point center_pt = getCentroid(hull);
 
             double min_dist = INT16_MAX;
-            Point nearest_pt;
+            cv::Point nearest_pt;
 
             for (size_t i = 0; i < pts.size(); i++)
             {
@@ -334,7 +334,7 @@
             min_dist = 0;
             for (size_t i = 0; i < hull.size(); i++)
             {
-                double dist = norm(center_pt - pts[i]);
+                double dist = cv::norm(center_pt - pts[i]);
                 if (dist > min_dist)
                 {
                     min_dist = dist;
@@ -353,7 +353,7 @@
 
             return r;
         }
-        return RotatedRect();
+        return cv::RotatedRect();
     }
 
     bool HopeOMr::getRRectParts()
@@ -367,7 +367,7 @@
         cv::RotatedRect RRect2 = RRect;
 
         cv::Point2f vtx[4];
-        RRect.size += Size2f(10, 10);
+        RRect.size += cv::Size2f(10, 10);
         RRect.size.height += 10;
         RRect.size.width += 10;
 
@@ -427,7 +427,7 @@
 
             for (int i = 0; i < 4; i++)
             {
-                cv::Rect crect = rr[i].boundingRect() & Rect(0, 0, image.cols, image.rows);
+                cv::Rect crect = rr[i].boundingRect() & cv::Rect(0, 0, image.cols, image.rows);
 
                 cv::Mat br1 = thresh0(crect);
                 cv::Mat display = image(crect);
@@ -449,7 +449,7 @@
 
                     if ((rdim > mindim) && (rdim < maxdim))
                     {
-                        cv::rectangle(m, r, Scalar(255), -1);
+                        cv::rectangle(m, r, cv::Scalar(255), -1);
                     }
                 }
 
