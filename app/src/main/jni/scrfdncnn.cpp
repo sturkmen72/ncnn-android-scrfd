@@ -125,7 +125,7 @@ void MyNdkCamera::on_image_render(cv::Mat& rgb) const
     {
         ncnn::MutexLockGuard g(lock);
 
-        if (!g_scrfd)
+        if (g_scrfd)
         {
             std::vector<FaceObject> faceobjects;
             g_scrfd->detect(rgb, faceobjects);
