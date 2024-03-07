@@ -37,7 +37,75 @@
 #include <arm_neon.h>
 #endif // __ARM_NEON
 
-namespace omr
+    class ContourWithData {
+    public:
+        int erosion_n = 1;
+        int MIN_CONTOUR_AREA = 6;
+        int MAX_CONTOUR_AREA = 300;
+        std::vector<cv::Point> contour;
+        cv::Rect boundingRect;
+        cv::RotatedRect rotRect;
+        cv::Point center;
+        double area;
+        int groupID;
+
+        bool isContourValid()
+        {
+            float height(rotRect.size.height);
+            float width(rotRect.size.width);
+            float short_side = height < width ? height : width;
+            float long_side = height > width ? height : width;
+            short_side *= 2;
+
+            return ((short_side / long_side > 0.4) & (area > MIN_CONTOUR_AREA));
+        }
+
+        static bool sortByBoundingRectCenterY(const ContourWithData& cwdLeft, const ContourWithData& cwdRight)
+        {
+            return (cwdLeft.center.x > cwdRight.center.x);
+        }
+        static bool sortByBoundingRectX(const ContourWithData& cwdLeft, const ContourWithData& cwdRight)
+        {
+            return ((cwdLeft.boundingRect.x + 100000 * (cwdLeft.boundingRect.y)) > (cwdRight.boundingRect.x + 100000 * (cwdRight.boundingRect.y)));
+            //return ((cwdLeft.boundingRect.x + 10000 * (cwdLeft.boundingRect.y / 25 * 25)) > (cwdRight.boundingRect.x + 10000 * (cwdRight.boundingRect.y / 25 * 25)));
+        }
+        static bool sortByBoundingRectWidth(const ContourWithData& cwdLeft, const ContourWithData& cwdRight)
+        {
+            return ((cwdLeft.boundingRect.width - cwdLeft.boundingRect.height) > (cwdRight.boundingRect.width - cwdRight.boundingRect.height));
+        }
+
+        static bool sortByBoundingRectCenter(const ContourWithData& cwdLeft, const ContourWithData& cwdRight)
+        {
+            return ((cwdLeft.center.y + 10000 * (cwdLeft.center.x)) > (cwdRight.center.y + 10000 * (cwdRight.center.x)));
+        }
+    };
+
+    class HopeOMr
+    {
+    public:
+
+        HopeOMr(cv::InputOutputArray _src, bool dbg = false);
+        void drawRotatedRect(cv::InputOutputArray src, cv::RotatedRect rrect, cv::Scalar color = cv::Scalar(0, 255, 0), int thickness = 1);
+        bool getRects();
+        bool getRects2();
+        bool drawRects();
+        cv::RotatedRect RRect;
+        std::vector<std::vector<cv::Point>> vec_pts;
+        cv::Mat thresh0;
+        cv::Mat thresh1;
+        bool debug;
+
+    protected:
+        cv::Mat image;
+        cv::Mat gray;
+        std::vector<ContourWithData> validContoursWithData;
+        std::vector<cv::Rect> rects;
+        int erosion_n = 2;
+        bool getRRectParts();
+        cv::RotatedRect getRRectPart(std::vector<cv::Point> contour);
+    };
+
+    bool doHopeOMr(cv::InputOutputArray src, int method = 0);
 {
     struct point_sorter_x_asc // sorts points by their x ascending
     {
@@ -63,7 +131,7 @@ namespace omr
         if (rrect.angle < -45.)
         {
             rrect.angle += 90.0;
-            swap(rrect.size.width, rrect.size.height);
+            std::swap(rrect.size.width, rrect.size.height);
         }
     }
 
