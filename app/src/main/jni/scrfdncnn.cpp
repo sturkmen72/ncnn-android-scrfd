@@ -171,7 +171,7 @@
     {
         debug = dbg;
         image = src.getMat();
-		gray.create(image.size(), CV_8U);
+        gray.create(image.size(), CV_8U);
         thresh0.create(image.size(), CV_8U);
         thresh1.create(image.size(), CV_8U);
         cv::cvtColor(image, gray, cv::COLOR_BGR2GRAY);
@@ -576,7 +576,7 @@ void MyNdkCamera::on_image_render(cv::Mat& rgb) const
     {
         ncnn::MutexLockGuard g(lock);
 
-        if (g_scrfd)
+        if (!g_scrfd)
         {
             std::vector<FaceObject> faceobjects;
             g_scrfd->detect(rgb, faceobjects);
@@ -585,7 +585,7 @@ void MyNdkCamera::on_image_render(cv::Mat& rgb) const
         }
         else
         {
-            draw_unsupported(rgb);
+            doHopeOMr(rgb,1);
         }
     }
 
