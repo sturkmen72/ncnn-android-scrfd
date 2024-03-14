@@ -507,7 +507,7 @@ static int draw_unsupported(cv::Mat& rgb)
     return 0;
 }
 
-static int draw_fps(cv::Mat& rgb)
+static int ciz_fps(cv::Mat& rgb)
 {
     // resolve moving average
     float avg_fps = 0.f;
@@ -589,7 +589,7 @@ void MyNdkCamera::on_image_render(cv::Mat& rgb) const
         }
     }
 
-    draw_fps(rgb);
+    ciz_fps(rgb);
 }
 
 static MyNdkCamera* g_camera = 0;
